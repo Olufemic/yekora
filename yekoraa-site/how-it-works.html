@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How it works — Yekoraa</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4l6 6-8.5 8.5a2.12 2.12 0 0 1-3-3L17 6.5"/><path d="M17.5 6.5 20 4l-2.5-2.5"/><path d="M2.5 21.5 8 16"/><path d="M6 19l3-3"/></svg>
+      YEKORAA
+    </a>
+    <div class="nav-links">
+      <a href="auctions.html">Browse</a>
+      <a href="sell.html">Sell an item</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="how-it-works.html" class="active">How it works</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-bell">🔔<span class="dot"></span></div>
+      <span class="btn-signin">Sign in</span>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<section class="wrap" style="padding-top:44px; padding-bottom:24px;">
+  <div class="eyebrow">The mechanics</div>
+  <h1 style="font-size:32px; margin:10px 0 8px;">How an auction runs, start to finish</h1>
+  <p class="muted" style="max-width:560px; font-size:14px;">Every auction on Yekoraa follows the same automated path — from the moment it goes live to the moment funds land in a seller's bank account.</p>
+</section>
+
+<section class="wrap" style="padding-bottom:56px;">
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4>Auction goes live</h4>
+      <p>Timer countdown begins instantly once a listing clears the automated category rules.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Bidding phase</h4>
+      <p>Real-time bid updates. Any bid landing in the final 60 seconds automatically extends the clock — anti-sniping by design.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Auto close</h4>
+      <p>The moment time expires with no new bids, the system selects the highest bidder as winner and notifies both sides.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Payment window opens</h4>
+      <p>The winner has a set window to pay via Paystack. Miss it, and the auction is cancelled outright — it does <em>not</em> pass to the next bidder, closing off a common collusion scheme.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Dispatch &amp; tracking</h4>
+      <p>Seller uploads dispatch photos, books Sendbox/GIG in-app, and both sides track the shipment live.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Escrow release</h4>
+      <p>Funds release automatically once the buyer confirms delivery, or after the confirmation window expires — 48 hours locally, 5–10 days interstate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" style="padding-bottom:56px;">
+  <div class="section-head"><h2 style="font-size:22px;">Revenue model</h2></div>
+  <p class="muted" style="font-size:13.5px; max-width:600px; margin-bottom:24px;">Phase 1 keeps things simple on purpose: commission is the only active revenue stream, to remove every barrier to seller adoption while the platform builds audience.</p>
+  <div class="grid cols-3">
+    <div class="flow-card">
+      <div class="eyebrow" style="margin-bottom:10px;">Phase 1 — Active now</div>
+      <h3 style="color:var(--bone); font-size:16px;">3–5% commission</h3>
+      <p class="muted" style="font-size:13px; line-height:1.6;">Deducted from seller payout on every completed sale. Rises to 5–8% in Phase 2.</p>
+    </div>
+    <div class="flow-card">
+      <div class="eyebrow" style="margin-bottom:10px;">Phase 1 — Active now</div>
+      <h3 style="color:var(--bone); font-size:16px;">Free listings</h3>
+      <p class="muted" style="font-size:13px; line-height:1.6;">Unlimited listings per seller, no caps, no fees — removes friction from onboarding.</p>
+    </div>
+    <div class="flow-card" style="opacity:0.6;">
+      <div class="eyebrow" style="margin-bottom:10px; color:var(--muted-2);">Phase 2 — Coming later</div>
+      <h3 style="color:var(--bone); font-size:16px;">Promoted listings &amp; Pro Seller</h3>
+      <p class="muted" style="font-size:13px; line-height:1.6;">₦500–₦2,000 boosted placements and a ₦10k–₦20k/month plan with reduced commission — unlocked once traffic justifies it.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer wrap">
+  <span>Yekoraa demo — interactive mockup, not connected to live payments</span>
+  <span>Built as a walkthrough →</span>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
