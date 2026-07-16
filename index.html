@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yekoraa — Nigerian Auction Marketplace</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4l6 6-8.5 8.5a2.12 2.12 0 0 1-3-3L17 6.5"/><path d="M17.5 6.5 20 4l-2.5-2.5"/><path d="M2.5 21.5 8 16"/><path d="M6 19l3-3"/></svg>
+      YEKORAA
+    </a>
+    <div class="nav-links">
+      <a href="auctions.html">Browse</a>
+      <a href="sell.html">Sell an item</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="how-it-works.html">How it works</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-bell">🔔<span class="dot"></span></div>
+      <span class="btn-signin">Sign in</span>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Live auctions · Naira escrow · No collusion re-bidding</div>
+    <h1>Every bid is watched. Every naira is held until your item arrives.</h1>
+    <p class="muted">Yekoraa runs Nigeria's auctions the way they should run: real-time bidding, anti-sniping extensions, and funds locked in escrow until delivery is confirmed — not before.</p>
+    <div class="hero-ctas">
+      <a href="auctions.html" class="btn btn-primary">Browse live auctions</a>
+      <a href="sell.html" class="btn btn-outline">Start selling</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" style="padding-bottom: 60px;">
+  <div class="section-head">
+    <h2>Ending soon</h2>
+    <span class="section-tag">⏱ live countdowns</span>
+  </div>
+  <div class="grid" id="home-grid"></div>
+</section>
+
+<section class="wrap" style="padding-bottom: 70px;">
+  <div class="grid cols-3">
+    <div class="flow-card">
+      <h3>Buyer flow</h3>
+      <div class="flow-step">
+        <div class="flow-icon">1</div>
+        <div><h5>Verify &amp; browse</h5><p>Light signup, no KYC unless bidding on high-value items.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🔔</div>
+        <div><h5>Bid &amp; get outbid alerts</h5><p>Instant SMS, WhatsApp and in-app alerts via Termii.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">₦</div>
+        <div><h5>Pay into escrow</h5><p>Paystack checkout — funds held until delivery is confirmed.</p></div>
+      </div>
+    </div>
+    <div class="flow-card">
+      <h3>Seller flow</h3>
+      <div class="flow-step">
+        <div class="flow-icon">✓</div>
+        <div><h5>KYC via Smile ID</h5><p>NIN or BVN verification, payout account linked once.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">2</div>
+        <div><h5>List for free</h5><p>Unlimited free listings at launch — no fees, no caps.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🚚</div>
+        <div><h5>Dispatch &amp; get paid</h5><p>Book Sendbox/GIG in-app. Payout is item price minus 3–5% commission.</p></div>
+      </div>
+    </div>
+    <div class="flow-card">
+      <h3>Escrow snapshot</h3>
+      <p class="muted" style="font-size:12px; margin-bottom:16px;">Example on a ₦50,000 sale</p>
+      <div class="escrow-row"><span>Buyer pays</span><span class="mono">₦50,850</span></div>
+      <div class="escrow-row"><span>Paystack fee</span><span class="mono">−₦850</span></div>
+      <div class="escrow-row"><span>Yekoraa commission (~4%)</span><span class="mono">−₦2,000</span></div>
+      <div class="escrow-row total"><span>Seller receives</span><span>₦48,000</span></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer wrap">
+  <span>Yekoraa demo — interactive mockup, not connected to live payments</span>
+  <span>Built as a walkthrough →</span>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const homeSet = YEKORAA_AUCTIONS.slice(0, 4);
+  yekRenderGrid("home-grid", homeSet);
+  yekRunLiveCards(homeSet);
+</script>
+</body>
+</html>

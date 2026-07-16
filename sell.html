@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sell an item — Yekoraa</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4l6 6-8.5 8.5a2.12 2.12 0 0 1-3-3L17 6.5"/><path d="M17.5 6.5 20 4l-2.5-2.5"/><path d="M2.5 21.5 8 16"/><path d="M6 19l3-3"/></svg>
+      YEKORAA
+    </a>
+    <div class="nav-links">
+      <a href="auctions.html">Browse</a>
+      <a href="sell.html" class="active">Sell an item</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="how-it-works.html">How it works</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-bell">🔔<span class="dot"></span></div>
+      <span class="btn-signin">Sign in</span>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<section class="wrap" style="padding-top:40px; padding-bottom:70px;">
+  <div class="eyebrow">Free at launch · Unlimited listings</div>
+  <h1 style="font-size:30px; margin:10px 0 6px;">List an item for auction</h1>
+  <p class="muted" style="max-width:520px; font-size:14px; margin-bottom:32px;">Required fields are enforced automatically per category before your listing goes live.</p>
+
+  <div id="form-view" class="form-card">
+    <form id="sell-form">
+      <div class="field">
+        <label>Photos (4–8 required)</label>
+        <div class="upload-box">📷 Drag photos here, or click to upload<br /><span class="hint">JPG/PNG, up to 8 images</span></div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="s-title">Item title</label>
+          <input class="input" id="s-title" placeholder="e.g. Vintage Bronze Benin Mask" required />
+        </div>
+        <div class="field">
+          <label for="s-category">Category</label>
+          <select class="input" id="s-category" required>
+            <option value="">Select a category</option>
+            <option>Electronics</option>
+            <option>Fashion</option>
+            <option>Home & Appliances</option>
+            <option>Art & Antiques</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="s-desc">Description</label>
+        <textarea class="input" id="s-desc" rows="4" placeholder="Condition, provenance, what's included…" required></textarea>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="s-start">Starting bid (₦)</label>
+          <input class="input" type="number" id="s-start" placeholder="15000" required />
+        </div>
+        <div class="field">
+          <label for="s-reserve">Reserve price (₦) <span class="hint">optional</span></label>
+          <input class="input" type="number" id="s-reserve" placeholder="Minimum acceptable sale price" />
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="s-duration">Auction duration</label>
+          <select class="input" id="s-duration" required>
+            <option>24 hours</option>
+            <option selected>3 days</option>
+            <option>5 days</option>
+            <option>7 days</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-condition">Condition</label>
+          <select class="input" id="s-condition" required>
+            <option>New</option>
+            <option>Used — Excellent</option>
+            <option>Used — Like new</option>
+            <option>Used — Fair</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">Publish listing</button>
+      <p class="muted-2" style="font-size:11.5px; text-align:center; margin-top:12px;">Listings auto-publish once required fields pass automated checks. Suspicious listings are flagged for review, not blocked.</p>
+    </form>
+  </div>
+
+  <div id="success-view" class="success-box" style="display:none; max-width:720px;">
+    <h3>✓ Listing published</h3>
+    <p class="muted" id="success-summary" style="font-size:14px; line-height:1.6;"></p>
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+      <a href="auctions.html" class="btn btn-outline">View live auctions</a>
+      <a href="dashboard.html" class="btn btn-primary">Go to dashboard</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer wrap">
+  <span>Yekoraa demo — interactive mockup, not connected to live payments</span>
+  <span>Built as a walkthrough →</span>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById("sell-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.getElementById("s-title").value || "Untitled item";
+    const start = document.getElementById("s-start").value || "0";
+    const duration = document.getElementById("s-duration").value;
+    const category = document.getElementById("s-category").value || "Uncategorized";
+
+    document.getElementById("form-view").style.display = "none";
+    document.getElementById("success-view").style.display = "block";
+    document.getElementById("success-summary").textContent =
+      `"${title}" is now live in ${category} with a starting bid of ${yekFmtNaira(start)}, running for ${duration}. Buyers who bid will get instant outbid alerts — you'll get a sale alert the moment it closes.`;
+  });
+</script>
+</body>
+</html>

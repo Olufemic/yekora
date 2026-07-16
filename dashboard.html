@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seller Dashboard — Yekoraa</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4l6 6-8.5 8.5a2.12 2.12 0 0 1-3-3L17 6.5"/><path d="M17.5 6.5 20 4l-2.5-2.5"/><path d="M2.5 21.5 8 16"/><path d="M6 19l3-3"/></svg>
+      YEKORAA
+    </a>
+    <div class="nav-links">
+      <a href="auctions.html">Browse</a>
+      <a href="sell.html">Sell an item</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="how-it-works.html">How it works</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-bell">🔔<span class="dot"></span></div>
+      <span class="btn-signin">Sign in</span>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<section class="wrap" style="padding-top:40px; padding-bottom:70px;">
+  <div class="eyebrow">AdunniArts · Verified seller</div>
+  <h1 style="font-size:28px; margin:10px 0 28px;">Seller dashboard</h1>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="label">Active listings</div>
+      <div class="value">6</div>
+      <div class="delta">+2 this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Pending payouts</div>
+      <div class="value">₦187,400</div>
+      <div class="delta">2 in escrow</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Completed sales</div>
+      <div class="value">31</div>
+      <div class="delta">98% clean history</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Seller tier</div>
+      <div class="value" style="color:var(--gold);">Top Seller</div>
+      <div class="delta">5+ clean transactions</div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2 style="font-size:19px;">Your listings</h2></div>
+  <div style="overflow-x:auto; border:1px solid var(--line); border-radius:16px;">
+    <table class="data-table">
+      <thead>
+        <tr><th>Item</th><th>Current bid</th><th>Bids</th><th>Time left</th><th>Status</th></tr>
+      </thead>
+      <tbody id="listings-body"></tbody>
+    </table>
+  </div>
+
+  <div class="section-head" style="margin-top:48px;"><h2 style="font-size:19px;">Latest payout breakdown</h2></div>
+  <div class="flow-card" style="max-width:420px;">
+    <div class="escrow-row"><span>Sale price</span><span class="mono">₦402,500</span></div>
+    <div class="escrow-row"><span>Paystack fee (buyer-paid)</span><span class="mono">—</span></div>
+    <div class="escrow-row"><span>Yekoraa commission (4%)</span><span class="mono">−₦16,100</span></div>
+    <div class="escrow-row total"><span>Payout to bank</span><span>₦386,400</span></div>
+  </div>
+</section>
+
+<footer class="footer wrap">
+  <span>Yekoraa demo — interactive mockup, not connected to live payments</span>
+  <span>Built as a walkthrough →</span>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const statusFor = (a) => {
+    if (a.seconds <= 0) return { label: "Sold", cls: "sold" };
+    if (a.seconds < 100) return { label: "Ending soon", cls: "pending" };
+    return { label: "Live", cls: "live" };
+  };
+
+  function renderRows() {
+    document.getElementById("listings-body").innerHTML = YEKORAA_AUCTIONS.slice(0, 6)
+      .map((a) => {
+        const s = statusFor(a);
+        return `<tr>
+          <td>${a.title}</td>
+          <td class="mono">${yekFmtNaira(a.bid)}</td>
+          <td>${a.bids}</td>
+          <td>${a.seconds > 0 ? a.seconds + "s" : "—"}</td>
+          <td><span class="status-pill ${s.cls}">${s.label}</span></td>
+        </tr>`;
+      })
+      .join("");
+  }
+
+  renderRows();
+  setInterval(() => {
+    YEKORAA_AUCTIONS.forEach((a) => { if (a.seconds > 0) a.seconds -= 1; });
+    renderRows();
+  }, 1000);
+</script>
+</body>
+</html>

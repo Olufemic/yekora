@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Auction — Yekoraa</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4l6 6-8.5 8.5a2.12 2.12 0 0 1-3-3L17 6.5"/><path d="M17.5 6.5 20 4l-2.5-2.5"/><path d="M2.5 21.5 8 16"/><path d="M6 19l3-3"/></svg>
+      YEKORAA
+    </a>
+    <div class="nav-links">
+      <a href="auctions.html" class="active">Browse</a>
+      <a href="sell.html">Sell an item</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="how-it-works.html">How it works</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-bell">🔔<span class="dot"></span></div>
+      <span class="btn-signin">Sign in</span>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<section class="wrap" style="padding-top:36px; padding-bottom:60px;">
+  <div class="detail-layout">
+    <div>
+      <div class="detail-media"><img id="d-img" src="" alt="" /></div>
+      <p class="muted" id="d-desc" style="margin-top:18px; font-size:14px; line-height:1.7; max-width:560px;"></p>
+      <div style="display:flex; gap:16px; margin-top:18px; font-size:12.5px;" class="muted-2">
+        <span id="d-category"></span> · <span id="d-condition"></span> · <span id="d-location"></span>
+      </div>
+    </div>
+
+    <div class="detail-panel">
+      <div class="detail-verified">✓ Verified seller · <span id="d-seller"></span></div>
+      <h1 class="detail-title" id="d-title"></h1>
+
+      <div class="detail-stats">
+        <div>
+          <div class="detail-stat-label">Current bid</div>
+          <div class="detail-stat-value" style="color:var(--gold);" id="d-bid"></div>
+          <div class="muted-2" style="font-size:11.5px; margin-top:4px;" id="d-bidcount"></div>
+        </div>
+        <div id="d-ring"></div>
+      </div>
+
+      <div id="bid-form-area">
+        <label for="d-amount" class="muted" style="font-size:12px;">Your bid (minimum <span id="d-min"></span>)</label>
+        <div class="bid-row" style="margin-top:8px;">
+          <input class="input" type="number" id="d-amount" />
+          <button class="btn btn-primary" id="d-place-bid" style="white-space:nowrap;">🔨 Place bid</button>
+        </div>
+        <p class="bid-hint">If you win, you'll have a payment window via Paystack. Miss it and the auction cancels — it does not pass to the next bidder, to prevent collusion.</p>
+      </div>
+
+      <div class="bid-success" id="d-success" style="display:none;"></div>
+
+      <div style="border-top:1px solid var(--line); padding-top:18px; margin-top:6px;">
+        <div class="muted-2" style="font-size:10px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;">Escrow breakdown if you win</div>
+        <div class="escrow-row"><span>Item + Paystack fee (1.5% + ₦100)</span><span class="mono" id="e-total"></span></div>
+        <div class="escrow-row"><span>Held in escrow until delivery confirmed</span><span style="color:var(--gold);">Locked</span></div>
+        <div class="escrow-row total"><span>Seller receives (~4% commission)</span><span id="e-seller"></span></div>
+      </div>
+
+      <div class="bid-history">
+        <h4>Recent bids</h4>
+        <div id="d-history"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:60px;">
+    <div class="section-head"><h2>You may also like</h2></div>
+    <div class="grid" id="related-grid"></div>
+  </div>
+</section>
+
+<footer class="footer wrap">
+  <span>Yekoraa demo — interactive mockup, not connected to live payments</span>
+  <span>Built as a walkthrough →</span>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id") || 1;
+  const auction = yekGetAuction(id) || YEKORAA_AUCTIONS[0];
+
+  let live = { seconds: auction.seconds, bid: auction.bid, bids: auction.bids };
+  let hasBid = false;
+  const bidHistory = [
+    { who: "You", amount: null },
+  ];
+  // seed a small fake history so the panel isn't empty
+  const seedHistory = [
+    { who: "Bidder_" + Math.floor(Math.random() * 900 + 100), amount: Math.round(auction.bid * 0.94) },
+    { who: "Bidder_" + Math.floor(Math.random() * 900 + 100), amount: Math.round(auction.bid * 0.97) },
+    { who: auction.seller + " (reserve met)", amount: Math.round(auction.startBid) },
+  ];
+
+  function renderHistory() {
+    const list = hasBid
+      ? [{ who: "You", amount: live.bid }, ...seedHistory]
+      : seedHistory;
+    document.getElementById("d-history").innerHTML = list
+      .map((h) => `<div class="bid-history-item"><span class="who">${h.who}</span><span>${yekFmtNaira(h.amount)}</span></div>`)
+      .join("");
+  }
+
+  function renderEscrow(amount) {
+    const total = amount * 1.015 + 100;
+    const commission = amount * 0.04;
+    document.getElementById("e-total").textContent = yekFmtNaira(total);
+    document.getElementById("e-seller").textContent = yekFmtNaira(amount - commission);
+  }
+
+  function renderStatic() {
+    document.title = auction.title + " — Yekoraa";
+    document.getElementById("d-img").src = auction.img;
+    document.getElementById("d-img").alt = auction.title;
+    document.getElementById("d-desc").textContent = auction.desc;
+    document.getElementById("d-category").textContent = auction.category;
+    document.getElementById("d-condition").textContent = auction.condition;
+    document.getElementById("d-location").textContent = auction.location;
+    document.getElementById("d-seller").textContent = auction.seller;
+    document.getElementById("d-title").textContent = auction.title;
+    document.getElementById("d-amount").value = live.bid + 1000;
+    renderHistory();
+    renderEscrow(live.bid + 1000);
+  }
+
+  function renderLive() {
+    document.getElementById("d-bid").textContent = yekFmtNaira(live.bid);
+    document.getElementById("d-bidcount").textContent = live.bids + " bids";
+    document.getElementById("d-ring").innerHTML = yekRingSVG(live.seconds, "lg");
+    document.getElementById("d-min").textContent = yekFmtNaira(live.bid + 1000);
+    const bidArea = document.getElementById("bid-form-area");
+    const placeBtn = document.getElementById("d-place-bid");
+    if (live.seconds <= 0) {
+      placeBtn.disabled = true;
+      placeBtn.textContent = "Auction closed";
+    }
+  }
+
+  renderStatic();
+  renderLive();
+
+  document.getElementById("d-place-bid").addEventListener("click", () => {
+    const amount = Number(document.getElementById("d-amount").value);
+    if (live.seconds <= 0) return;
+    if (amount < live.bid + 1000) {
+      yekToast("Bid must be at least " + yekFmtNaira(live.bid + 1000));
+      return;
+    }
+    live.bid = amount;
+    live.bids += 1;
+    hasBid = true;
+    document.getElementById("d-success").style.display = "flex";
+    document.getElementById("d-success").innerHTML = `✓ Bid of ${yekFmtNaira(amount)} placed. You'll get an SMS/WhatsApp alert if outbid.`;
+    document.getElementById("bid-form-area").style.display = "none";
+    renderLive();
+    renderHistory();
+    renderEscrow(amount);
+  });
+
+  document.getElementById("d-amount").addEventListener("input", (e) => {
+    if (Number(e.target.value) > 0) renderEscrow(Number(e.target.value));
+  });
+
+  // countdown ticking, with the same anti-sniping simulation as list pages
+  setInterval(() => {
+    if (live.seconds <= 0) return;
+    live.seconds -= 1;
+    if (live.seconds > 0 && live.seconds <= 60 && live.seconds % 23 === 0 && !hasBid) {
+      live.bid = Math.round(live.bid * 1.015);
+      live.bids += 1;
+      live.seconds += 60;
+      yekToast(`New bid on "${auction.title}" — timer extended`);
+      renderHistory();
+    }
+    renderLive();
+  }, 1000);
+
+  // related items
+  const related = YEKORAA_AUCTIONS.filter((a) => a.id !== auction.id && a.category === auction.category).slice(0, 4);
+  const fallback = YEKORAA_AUCTIONS.filter((a) => a.id !== auction.id).slice(0, 4);
+  const relatedSet = related.length ? related : fallback;
+  yekRenderGrid("related-grid", relatedSet);
+  yekRunLiveCards(relatedSet);
+</script>
+</body>
+</html>
